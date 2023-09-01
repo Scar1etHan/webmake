@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mvc.test.mappers.reply">
+	
+	<!-- 1. 댓글 입력 -->
+	<insert id="writeReply">
+		insert into qareply(rno,bno,replycontent,user_id)
+		values((select nvl(max(rno)+1,1) from qareply),
+				#{bno}, #{replycontent}, #{user_id})
+	
+	</insert>
+	
+	<!-- 2. 댓글 목록 -->
+	<select id="listReply" resultType="mvc.test.controller.domain.ReplyVO">
+		select rno, bno, replycontent, user_id, regDate 
+		from qareply where bno = #{bno} 
+		order by rno
+	</select>
+</mapper>

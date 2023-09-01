@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+                        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="mvc.test.mappers.member">
+
+	<!-- 1. 회원 목록 -->
+    <select id="memberList" resultType="mvc.test.member.dto.MemberVO">
+        select 
+          user_id, user_pw, user_name, user_age, user_sex, user_email, user_phone, 
+     	  user_Addr1, user_Addr2, user_Addr3, user_regdate
+        from member order by user_regdate desc
+    </select>
+    
+    <!-- 2. 회원 가입 -->
+    <insert id="insertmember">
+    	insert into member
+    		(user_id, user_pw, user_name, user_sex, user_age, user_email,
+    		 user_phone, user_Addr1, user_Addr2, user_Addr3)
+    	values
+    		(#{user_id}, #{user_pw}, #{user_name}, #{user_sex}, #{user_age}, #{user_email},
+    		 #{user_phone}, #{user_Addr1}, #{user_Addr2}, #{user_Addr3})
+    </insert>
+    
+    <!-- 3. 회원 정보 보기 -->
+    <select id="viewmember" resultType="mvc.test.member.dto.MemberVO">
+    	select 
+    		user_id, user_name, user_age, user_sex, user_email, user_phone,
+    		user_Addr1, user_Addr2, user_Addr3, user_regdate
+    	from member
+    	where user_id = #{user_id}
+    </select>
+    
+    <!-- 4. 회원 정보 수정 -->
+    <update id="updatemember">
+    	update member
+    	set user_phone = #{user_phone}, user_email = #{user_email}, 
+    	user_Addr1 = #{user_Addr1}, user_Addr2 = #{user_Addr2}, user_Addr3 = #{user_Addr3}
+    	where user_id = #{user_id}
+    </update>
+    
+    <!-- 5. 회원 정보 삭제 -->
+    <delete id="deletemember">
+    	delete from member where user_id = #{user_id}
+    </delete>
+    
+	<!-- 6. 회원 아이디 중복체크 -->
+	<select id="checkUserId" resultType="int">
+		select count(*) from member where user_id = #{user_id}
+	</select>
+	
+	<!-- 7. 회원 아이디 찾기 -->
+	<select id="findUserId" resultType="String">
+        select user_id from member where user_name = #{user_name} and user_email = #{user_email}
+    </select>
+    
+    <!-- 8. 회원 비밀번호 찾기 -->
+    <select id="findUserPw" resultType="String">
+    	select user_pw from member
+    	where user_name = #{user_name} and user_email = #{user_email} and user_id = #{user_id}
+    </select>
+    
+    <!-- 9. 회원 로그인 -->
+    <select id="checkLogin" resultType="mvc.test.member.dto.MemberVO">
+    	select * from member
+    	where user_id = #{user_id} and user_pw = #{user_pw}
+    </select>
+    
+</mapper>
