@@ -423,7 +423,29 @@ body {
       });
     }, false);
 </script>
+<script>
+    $(document).ready(function() {
+        $("form[name='sign']").on("submit", function(e) {
+            e.preventDefault(); // 기본 submit 동작을 막음
 
+            var formData = $(this).serialize(); // form 내부의 입력값을 key=value 형태의 문자열로 변환
+
+            $.ajax({
+                type: "POST",
+                url: "${path}/Member/insert",
+                data: formData,
+                success: function(response) {
+                    alert('회원 가입이 성공적으로 완료되었습니다.');
+                    location.href = "/";  // 메인페이지로 리다이렉트
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    alert('회원 가입에 실패하였습니다. 다시 시도해주세요.');
+                }
+            });
+        });
+    });
+</script>
 
   
   <!-- 주소지 스크립트 -->

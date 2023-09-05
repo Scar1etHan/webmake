@@ -57,7 +57,7 @@
 			</div>
 			<div class="row mt-5">
 				<div class="flex-container">
-					<button class="btn btn-primary" onclick="history.go(-1)">돌아가기</button>
+					<button class="btn btn-primary" onclick="window.location.href='/Member/login'">돌아가기</button>
 					<button class="btn btn-success" type="button" onclick="findPassword()">비밀번호찾기</button>
 				</div>
 			</div>
@@ -104,7 +104,7 @@ function findPassword() {
       textContainer.style.top = "50%";
       textContainer.style.left = "50%";
       textContainer.style.transform = "translate(-50%, -50%)";
-      textContainer.innerHTML = user_id + "의 비밀번호 : " + response;
+      textContainer.innerHTML = user_id + " 의 비밀번호 : " + response;
       popupWindow.document.body.appendChild(textContainer);
 
       // 팝업창 안에 텍스트들 가운데 정렬

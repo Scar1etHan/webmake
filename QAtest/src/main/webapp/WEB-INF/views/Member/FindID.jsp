@@ -39,7 +39,7 @@
 			<h1 class="h3 mb-3 fw-normal mt-7">아이디 찾기</h1>
 			<div class="row mt-3">
 				<div class="form-floating">
-					<input type="text" class="form-control" id="floatingname" placeholder="아이디 입력" required> 
+					<input type="text" class="form-control" id="floatingname" placeholder="이름 입력" required> 
 					<label for="floatingname">이름</label>
 				</div>
 			</div>
@@ -51,8 +51,9 @@
 			</div>
 			<div class="row mt-5">
 				<div class="flex-container">
-					<button class="btn btn-primary" onclick="history.go(-1)">돌아가기</button>
-					<button class="btn btn-success" type="submit" onclick="findId()">아이디찾기</button>
+					<button class="btn btn-primary" onclick="window.location.href='/Member/login'">돌아가기</button>
+					<button class="btn btn-success" type="submit" onclick="findId()">아이디 찾기</button>
+					<button class="btn btn-success"  onclick="window.location.href='/Member/FindPassword'">비밀번호 찾기</button>
 				</div>
 			</div>
 		</form>
@@ -72,10 +73,7 @@ function findId() {
     $.ajax({
         type: "POST",
         url: "/Member/findId",
-        data: {
-            "user_name": name,
-            "user_email": email
-        },
+        data: {"user_name": name, "user_email": email},
         success: function(response){
             var userId = response;
             
@@ -88,7 +86,7 @@ function findId() {
             textContainer.style.top = "50%";
             textContainer.style.left = "50%";
             textContainer.style.transform = "translate(-50%, -50%)";
-            textContainer.innerHTML = "Your ID is: " + userId;
+            textContainer.innerHTML = name+" 의 ID : " + userId;
             popupWindow.document.body.appendChild(textContainer);
             
             // 닫기 버튼 추가

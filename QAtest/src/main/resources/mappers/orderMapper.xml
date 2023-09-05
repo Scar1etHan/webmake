@@ -6,7 +6,7 @@
 	
 	<!-- 0. 관리자가 보는 전체 주문 목록 -->
 	<select id="totalorderlist" resultType="mvc.test.order.dto.OrderListVO">
-		select order_number, order_total, order_date, order_deliver, order_payment
+		select order_number, order_total, order_date, order_deliver, order_payment, user_id
 		from orderlist
 		order by order_number desc
 	</select>

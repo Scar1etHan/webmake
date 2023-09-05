@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -23,6 +24,7 @@
            		<div class="login_id">
 	                <h4>ID</h4>
 	                <input type="text" name="user_id" id="user_id" placeholder="아이디">
+	                
             	</div>
 	            <div class="login_pw">
 	                <h4>Password</h4>
@@ -47,5 +49,12 @@
 	        </form>       
         </div>
     </div>
+    
+	<c:if test="${not empty loginError}">
+		<script>
+			alert('${loginError}');
+		</script>
+	</c:if>
+    
 </body>
 </html>

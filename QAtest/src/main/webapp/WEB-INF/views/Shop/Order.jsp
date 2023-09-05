@@ -84,22 +84,10 @@ th, td {
 						<h3>마이페이지</h3>
 						<hr>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="../Member/MemberInfo.jsp">회원정보</a>
-						<hr>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="../Member/MemberModiInfo.jsp">회원수정</a>
-						<hr>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="Orderboard.jsp">주문목록</a>
-						<hr>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">회원탈퇴</a>
-						<hr>
-					</li>
+					<li class="nav-item"><a class="nav-link" href="../Member/MemberInfo?user_id=${sessionScope.loginUser.user_id}">회원정보</a><hr></li>
+					<li class="nav-item"><a class="nav-link" href="../Member/MemberModiInfo?user_id=${sessionScope.loginUser.user_id}">회원수정</a><hr></li>
+					<li class="nav-item"><a class="nav-link" href="../Shop/Orderboard?user_id=${sessionScope.loginUser.user_id}">주문목록</a><hr></li>
+					<li class="nav-item"><a class="nav-link" onclick="confirmDeleteMember('${sessionScope.loginUser.user_id}')" style="cursor:pointer">회원탈퇴</a><hr></li>
 				</ul>
 			</div>
 
@@ -187,7 +175,28 @@ th, td {
 	<div style="margin-top:200px">
 		<jsp:include page="/WEB-INF/views/Interface/footer.jsp" />
 	</div>
-		
+	
+	<!-- 회원 삭제 -->
+	<script>
+	    function confirmDeleteMember(user_id) {
+	        var result = confirm("회원을 삭제하시겠습니까?");
+	        if (result) {
+	            deleteMember(user_id);
+	        }
+	    }
+	
+	    function deleteMember(user_id) {
+	        $.ajax({
+	            type: "POST",
+	            url: "/Member/MemberDelete", 			// 회원 삭제 처리를 위한 URL로 수정해야 합니다.
+	            data: { user_id: user_id }, 	// 삭제할 회원의 아이디를 데이터로 전달
+	            success: function(response) {
+	                location.href = '/'; 		// 삭제 성공 후 홈페이지로 이동 또는 원하는 페이지로 이동
+	            }
+	        });
+	    }
+	</script>
+	
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"

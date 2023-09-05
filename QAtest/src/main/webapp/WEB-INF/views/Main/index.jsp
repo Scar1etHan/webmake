@@ -59,7 +59,9 @@
                      </div>
                   </div>
                </div>
+               
             </div>
+            
          </div>
          <jsp:include page="/WEB-INF/views/Interface/footer.jsp"/>
         </div>

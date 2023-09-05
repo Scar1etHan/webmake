@@ -82,7 +82,7 @@
                                                   '</div>' +
                                                 '</div>' +
                                                 '<div class="card-body">' +
-                                                  '<p class="card-text">내용 : ' + reply.replycontent + '</p>' +
+                                                  '<p class="card-text">' + reply.replycontent + '</p>' +
                                                 '</div>' +
                                               '</div>';
                             commentSection.append(commentHtml);
@@ -97,8 +97,9 @@
 <body>
 
 	<!-- 상단 navbar -->
-	
-	<jsp:include page="/WEB-INF/views/Interface/header.jsp" />
+	<div class="fixed-top">
+		<jsp:include page="/WEB-INF/views/Interface/header.jsp" />
+	</div>
 	
 	<article style="background-color: white; padding-top:100px" >
 		<div class="container mt-5">
@@ -161,7 +162,9 @@
 		</div>
 	</article>
 	<!-- 하단영역(footer) -->
+	<div style="padding-top:45px">
 	<jsp:include page="/WEB-INF/views/Interface/footer.jsp" />
+	</div>
 	
 	
 	<!-- 로그인 구분 댓글 작성 js -->
@@ -171,7 +174,7 @@
 		    if (loginUser == 'null' || loginUser == '') {
 		        event.preventDefault(); // 폼 제출 취소
 		        alert('로그인한 사람만 게시글 작성이 가능합니다.');
-		        location.href='/Member/login';
+		        //location.href='/Member/login';
 		    }
 		}
 	</script>

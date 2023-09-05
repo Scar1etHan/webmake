@@ -87,10 +87,10 @@
 				<th style="width: 12%;">주소3</th>
 				<th style="width: 10%;">등록일</th>
 			</tr>
-			<tbody>
+			<tbody> <!-- path는 jsp에서 사용하는 el문으로 페이지에서 데이터를 쉽게 쓰게 해주는 스크립언어 -->
 				<c:forEach items="${list}" var="memberlist">
-					<tr>  <!-- path는 jsp에서 사용하는 el문으로 페이지에서 데이터를 쉽게 쓰게 해주는 스크립언어 -->
-						<td><a href="${path}/Member/MemberInfo?user_id=${memberlist.user_id}">${memberlist.user_id}</a></td>
+					<tr onclick="location.href='${path}/Member/MemberInfo?user_id=${memberlist.user_id}'" style="cursor:pointer">  
+						<td>${memberlist.user_id}</td>
 						<td>${memberlist.user_pw}</td>
 						<td>${memberlist.user_name}</td>
 						<td>${memberlist.user_phone}</td>
@@ -114,6 +114,7 @@
 		<jsp:include page="/WEB-INF/views/Interface/footer.jsp" />
 	</div>
 
+	<!-- 페이징 처리 -->
 	<script>
 	    let options = {
 	        numberPerPage:10, 

@@ -78,17 +78,19 @@
 	    <table class="myTable table table-hover">	<!-- 페이징 처리구간 -->
 		<!-- <table class="table table-striped table-bordered table-hover"> -->
 				<tr>
-					<th style="width: 10%;">주문번호</th>
-					<th style="width: 10%;">결제 수단</th>
-					<th style="width: 15%;">주문 총액</th>
+					<th style="width: 7%;">주문번호</th>
+					<th style="width: 10%;">주문자</th>
+					<th style="width: 8%;">결제 수단</th>
+					<th style="width: 13%;">주문 총액</th>
 					<th style="width: 20%;">주문 날짜</th>
 					<th style="width: 15%;">배송 상태</th>
-					<th style="width: 30%;">배송 결정</th>
+					<th style="width: 25%;">배송 결정</th>
 				</tr>
 			<tbody>
 				<c:forEach items="${totallist}" var="ol">
 					<tr>
 						<td>${ol.order_number}</td>
+						<td>${ol.user_id}</td>
 						<td>${ol.order_payment}</td>
 						<td>${ol.order_total}</td>
 						<td>
@@ -114,7 +116,7 @@
 	</div>
 
 	<!-- 하단영역(footer) -->
-	<div style="padding-top:300px">
+	<div style="padding-top:340px">
 		<jsp:include page="/WEB-INF/views/Interface/footer.jsp" />
 	</div>
 	

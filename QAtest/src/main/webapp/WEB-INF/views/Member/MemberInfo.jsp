@@ -62,18 +62,10 @@ th, td {
 						<h3>마이페이지</h3>
 						<hr>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="MemberInfo">회원정보</a><hr>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="MemberModiInfo">회원수정</a><hr>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="../Shop/Orderboard">주문목록</a><hr>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">회원탈퇴</a><hr>
-					</li>
+					<li class="nav-item"><a class="nav-link" href="../Member/MemberInfo?user_id=${sessionScope.loginUser.user_id}">회원정보</a><hr></li>
+					<li class="nav-item"><a class="nav-link" href="../Member/MemberModiInfo?user_id=${sessionScope.loginUser.user_id}">회원수정</a><hr></li>
+					<li class="nav-item"><a class="nav-link" href="../Shop/Orderboard?user_id=${sessionScope.loginUser.user_id}">주문목록</a><hr></li>
+					<li class="nav-item"><a class="nav-link" onclick="confirmDeleteMember('${sessionScope.loginUser.user_id}')" style="cursor:pointer">회원탈퇴</a><hr></li>
 				</ul>
 			</div>
 
@@ -192,7 +184,7 @@ th, td {
 	            url: "/Member/MemberDelete", 			// 회원 삭제 처리를 위한 URL로 수정해야 합니다.
 	            data: { user_id: user_id }, 	// 삭제할 회원의 아이디를 데이터로 전달
 	            success: function(response) {
-	                location.href = '/Member/MemberList'; 		// 삭제 성공 후 홈페이지로 이동 또는 원하는 페이지로 이동
+	                location.href = '/'; 		// 삭제 성공 후 홈페이지로 이동 또는 원하는 페이지로 이동
 	            }
 	        });
 	    }

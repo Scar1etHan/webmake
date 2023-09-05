@@ -80,9 +80,10 @@ public class MemberController {
 	
 	//	5. 회원 정보 삭제
 	@RequestMapping(value="Member/MemberDelete", method = RequestMethod.POST)
-	public String postmemberdelete(@RequestParam("user_id") String user_id) throws Exception{
+	public String postmemberdelete(@RequestParam("user_id") String user_id, HttpSession session) throws Exception{
 		memberService.deleteMember(user_id);
-		return "redirect:/Member/MemberList";
+		session.invalidate();
+		return "redirect:/";
 	}
 	
 	// 6. 아이디 중복 확인
@@ -122,17 +123,22 @@ public class MemberController {
 	
 	//	9. 회원 로그인
 	@RequestMapping(value = "Member/login", method = RequestMethod.POST)
-	public String loginUserSubmit(@ModelAttribute MemberVO member, HttpSession session, Model model, RedirectAttributes redirectAttributes)
-			throws Exception{
+	public String loginUserSubmit(@ModelAttribute MemberVO member, HttpSession session, Model model,
+	                               RedirectAttributes redirectAttributes) throws Exception {
 
 	    MemberVO loginUser = memberService.checkLogin(member);
 	    
 	    System.out.println("로그인중인 유저 : "+loginUser);
+	    
 	    if (loginUser != null) {
 	        session.setAttribute("loginUser", loginUser);
 	        return "redirect:/";
 	    } else {
-	        redirectAttributes.addFlashAttribute("msg_login_fail", "아이디 또는 비밀번호가 잘못되었습니다.");
+	        if (memberService.checkUserId(member.getUser_id()) == 0) {
+	            redirectAttributes.addFlashAttribute("loginError", "아이디가 잘못되었습니다.");
+	        } else {
+	            redirectAttributes.addFlashAttribute("loginError", "비밀번호가 잘못되었습니다.");
+	        }
 	        return "redirect:/Member/login";
 	    }
 	}

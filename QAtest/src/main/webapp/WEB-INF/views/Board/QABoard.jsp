@@ -103,7 +103,6 @@
 		</div>
 		
 	    <table class="myTable table table-hover" style="margin:0 auto">
-		<!-- <table class="table table-striped table-bordered table-hover"> -->
 				<tr>
 					<th style="width: 5%;">번호</th>
 					<th style="width: 35%;">제목</th>
@@ -111,32 +110,32 @@
 					<th style="width: 15%;">날짜</th>
 					<th style="width: 10%;">조회수</th>
 				</tr>
-			<tbody>
-				<c:forEach items="${list}" var="qalist">
-					<tr>
-						<td>${qalist.bno}</td>
-						<td>
-						  <a href="${path}/Board/QABoardview?bno=${qalist.bno}">${qalist.title}</a>
-						  <c:choose>
-						    <c:when test="${qalist.replycnt > 0}">
-						      <span style="color:red; margin-left:5px;">[ ${qalist.replycnt} ]</span>
-						    </c:when>
-						    <c:otherwise></c:otherwise>
-						  </c:choose>
-						</td>
-						<td>${qalist.user_id}</td>
-						<td>
-						  <fmt:formatDate value="${qalist.regDate}" pattern="yy-MM-dd a h:mm"/>
-						</td>
-						<td>${qalist.viewCnt}</td>
-					</tr>
-				</c:forEach>
-			</tbody>
+				<tbody>
+				    <c:forEach items="${list}" var="qalist">
+				        <tr onclick="location.href='${path}/Board/QABoardview?bno=${qalist.bno}'"style="cursor: pointer;">
+				            <td>${qalist.bno}</td>
+				            <td>
+				                ${qalist.title}
+				                <c:choose>
+				                    <c:when test="${qalist.replycnt > 0}">
+				                        <span style="color:red; margin-left:5px;">[ ${qalist.replycnt} ]</span>
+				                    </c:when>
+				                    <c:otherwise></c:otherwise>
+				                </c:choose>
+				            </td>
+				            <td>${qalist.user_id}</td>
+				            <td><fmt:formatDate value="${qalist.regDate}" pattern="yy-MM-dd a h:mm"/></td>
+				            <td>${qalist.viewCnt}</td>
+				        </tr>
+				    </c:forEach> 
+				</tbody>  
 		</table>
 	</div>
 
 	<!-- 하단영역(footer) -->
+	<div style="padding-top:200px">
 	<jsp:include page="/WEB-INF/views/Interface/footer.jsp" />
+	</div>
 
 
 	<!-- 글 작성 버튼 -->

@@ -61,7 +61,7 @@
 									<a class="dropdown-item" href="../Board/ReviewBoard">리뷰게시판</a>
 									<a class="dropdown-item" href="../Board/NoticeBoard.jsp">공지사항</a>
 								</div></li>
-							<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">회원관련</a>
+							<li><a href="#" class="dropdown-toggle" data-toggle="dropdown">전체 목록</a>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" href="../Member/MemberList">전체회원목록</a> 
 									<a class="dropdown-item" href="../Shop/Orderlist">전체주문목록</a>
@@ -79,15 +79,14 @@
 							        </div>
 							    </c:when>
 							    <c:otherwise>
-							        <!-- 로그인된 경우 -->
-							        <div>
-							            <a href="../Shop/Orderboard" style="color:white">주문목록</a>
-							        </div>
-							        <div style="color: white">
-							            ${sessionScope.loginUser.user_id}님 환영합니다!&nbsp;&nbsp; |&nbsp;&nbsp; 
-							            <a href="../Member/logout" style="color: white">로그아웃</a>
-							        </div>
-							    </c:otherwise>
+								    <!-- 로그인된 경우 -->
+								    <div class="login" style="color: white">
+								    	<a href="../Member/MemberInfo?user_id=${sessionScope.loginUser.user_id}" style="color:white">내정보</a>&nbsp;&nbsp; |&nbsp;&nbsp;
+								        <a href="../Shop/Orderboard" style="color:white">주문목록</a>&nbsp;&nbsp; |&nbsp;&nbsp;
+								        ${sessionScope.loginUser.user_id}님 환영합니다!&nbsp;&nbsp; |&nbsp;&nbsp;
+								        <a href="../Member/logout" style="color: white">로그아웃</a>
+								    </div>  
+								</c:otherwise> 
 							</c:choose>
 
 							<div id="myNav" class="overlay">
