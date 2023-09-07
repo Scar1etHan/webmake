@@ -62,10 +62,10 @@ public class HomeController {
 		return "Member/FindPassword";
 	}
 	
-	/*
-	 * @RequestMapping(value="/Shop/Order", method = RequestMethod.GET) public
-	 * String order() { logger.info("주문목록으로 이동");
-	 * 
-	 * return "Shop/Order"; }
-	 */
+	@RequestMapping(value="/Shop/Shop", method = RequestMethod.GET)
+	public String shop() {
+		logger.info("상품 리스트 이동");
+		
+		return "Shop/Shop";
+	}
 }

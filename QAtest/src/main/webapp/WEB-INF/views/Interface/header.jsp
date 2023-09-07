@@ -50,7 +50,7 @@
 					<div class="menu_text font-weight-bold">
 						<ul>
 							<li><a href="../Test/Vote.jsp">피부진단</a></li>
-							<li><a href="../Shop/Shop.jsp">쇼핑몰</a></li>
+							<li><a href="../Shop/Shop">쇼핑몰</a></li>
 							<li><a href="../Main/Map">찾아오시는 길</a></li>
 							<li class="nav-item dropdown"><a href="#"
 								class="dropdown-toggle" data-toggle="dropdown">커뮤티니</a>

@@ -7,12 +7,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript">   
-	$(document).ready( function() {
-		$("#header").load("../Interface/header.jsp");
-		$("#footer").load("../Interface/footer.jsp");
-});
-</script>
 <head>
 <title>Insert title here</title>
 <style>
