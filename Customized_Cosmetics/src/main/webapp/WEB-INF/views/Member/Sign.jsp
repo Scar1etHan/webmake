@@ -50,7 +50,7 @@ body {
 		<div class="input-form-backgroud row">
             <div class="input-form col-md-12 mx-auto">
                 <h4 class="mb-3" style="text-align: center">회원가입</h4>
-                <form name="sign" class="validation-form" novalidate method="post" action="${path}/Member/insert">
+                <form name="sign" class="validation-form" novalidate method="post" action="${path}/Member/Sign">
                     <!-- 이름, 나이, 성별 입력 부분 -->
                     <div class="row">
                         <div class="col-md-4 mb-3">

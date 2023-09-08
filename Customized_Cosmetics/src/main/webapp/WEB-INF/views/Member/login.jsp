@@ -55,7 +55,7 @@
 	            </div>
 	                <input type="submit" id="btnLogin" value="로그인">
 	            </form>
-	              <a href="Sign"><input type="button" value="회원가입"></a>
+	              <a href="Signcheck"><input type="button" value="회원가입"></a>
 	        </div>
 	    </div>
 
