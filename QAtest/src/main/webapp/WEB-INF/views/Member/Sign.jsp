@@ -62,8 +62,8 @@ body {
                         </div>
                         <div class="col-md-3 offset-md-1 mb-3">
                             <label for="name">나이</label>
-                            <input type="text" class="form-control" id="user_age" name="user_age" 
-                            	value="${vo.user_age}" placeholder="나이" required>
+                            <input type="number" class="form-control" id="user_age" name="user_age" 
+                            	value="${vo.user_age}" placeholder="나이" required min="1" max="100">
                             <div class="invalid-feedback">나이를 입력해주세요.</div>
                             <div id="ageMessage"></div>
                         </div>
@@ -119,7 +119,7 @@ body {
                         <div class="col-md-9 mb-3">
                             <label for="name">전화번호</label>
                             <input type="text" class="form-control" id="user_phone" name="user_phone" 
-                            	value="${vo.user_phone} "placeholder="전화번호" required>
+                            	value="${vo.user_phone}"placeholder="전화번호" required>
                             <div class="invalid-feedback">전화번호를 입력해주세요.</div>
                             <div id="phoneMessage"></div>
                         </div>
@@ -183,11 +183,11 @@ body {
 	var phonecheck = false;		// 전화번호 유효성 검사
 	var sexcheck = false;		// 성별 유효성 검사
 	
-	const nameRegex = /^[가-힣]{2,5}$/;										// 이름 유효성 검사
-	const userIdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,15}$/;			// 아이디 유효성 검사
-	const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,15}$/; 		// 비밀번호 유효성 검사
-	const ageRegex = /^(?:100|[1-9]\d?)$/; 									// 나이 유효성 검사 (1~100)
-	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 	// 이메일 유효성 검사
+	const nameRegex = /^[가-힣]{2,5}$/;										// 이름 유효성 검사 (한글 2~5글자만)
+	const userIdRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,15}$/;			// 아이디 유효성 검사 (영어 숫자 섞어서 4~15글자)
+	const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,15}$/; 		// 비밀번호 유효성 검사 (영어 숫자 섞어서 4~15글자)
+	const ageRegex = /^(?:100|[1-9]\d?)$/; 									// 나이 유효성 검사 (숫자 1~100 사이 값)
+	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; 	// 이메일 유효성 검사 (이메일 형태 값)
 	const phoneRegex = /^\d{11}$/; 											// 전화번호 유효성 검사 (숫자로만 이루어진 11자리)
 	
 	// 이름,아이디,비밀번호 유효성 검사 함수
@@ -236,7 +236,7 @@ body {
     //	유효성 체크 (나이)
     function checkAgeValid() {
         const userAge = document.getElementById("user_age");
-        const ageMessage = document.getElementById("ageMessage"); // 나이 메시지를 위한 span 요소 생성
+        const ageMessage = document.getElementById("ageMessage"); 
 
         let ageValid = isAgeValid(userAge.value);
         if (!ageValid) {
@@ -270,7 +270,7 @@ body {
     //	유효성 체크 (이메일)
     function checkEmailValid() {
         const userEmail = document.getElementById("user_email");
-        const emailMessage = document.getElementById("emailMessage"); // 이메일 메시지를 위한 span 요소 생성
+        const emailMessage = document.getElementById("emailMessage"); 
 
         let emailValid = isEmailValid(userEmail.value);
         if (!emailValid) {
@@ -290,8 +290,10 @@ body {
     function checkPhoneValid() {
         const userPhone = document.getElementById("user_phone");
         const phoneMessage = document.getElementById("phoneMessage");
-
-        let phoneValid = isPhoneValid(userPhone.value);
+        
+        const phoneValue = userPhone.value.trim();
+        
+        let phoneValid = isPhoneValid(phoneValue);
         if (!phoneValid) {
             phoneMessage.style.color = "red";
             phoneMessage.textContent = "전화번호는 숫자로만 이루어진 11자리여야 합니다.";
@@ -347,15 +349,6 @@ body {
         });
     });
 </script>
-	
-	<!-- 성별 체크박스 -->
-	
-<!-- <script>
-        function updateTextInput() {
-            var selectedValue = document.querySelector('select[name="sex"]').value;
-            document.getElementById('user_sex').value = selectedValue;
-        }
-</script> -->
 
 	<!-- 비밀번호 일치 확인-->
 <script>
@@ -423,10 +416,21 @@ body {
       });
     }, false);
 </script>
+
 <script>
     $(document).ready(function() {
         $("form[name='sign']").on("submit", function(e) {
-            e.preventDefault(); // 기본 submit 동작을 막음
+        	
+        	 if (!idCheckDone) {
+                 e.preventDefault();
+                 return;
+             } else if (!passwordMatch) {
+                 e.preventDefault();
+                 return;
+             } else if(!namecheck || !agecheck || !emailcheck || !phonecheck || !sexcheck){ 
+                 e.preventDefault();
+                 return;
+             }
 
             var formData = $(this).serialize(); // form 내부의 입력값을 key=value 형태의 문자열로 변환
 
@@ -436,13 +440,14 @@ body {
                 data: formData,
                 success: function(response) {
                     alert('회원 가입이 성공적으로 완료되었습니다.');
-                    location.href = "/";  // 메인페이지로 리다이렉트
-                },
+                    location.href = "/";  
+                    },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(textStatus, errorThrown);
                     alert('회원 가입에 실패하였습니다. 다시 시도해주세요.');
                 }
             });
+            e.preventDefault(); // 기본 submit 동작을 막음
         });
     });
 </script>
