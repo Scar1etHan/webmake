@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mvc.test.mappers.ReviewBoard">
+	<!-- 게시물 목록 -->
+	<select id="list" resultType="mvc.test.controller.domain.ReviewBoardVO">
+		select
+			bno, title, content, writer, regDate, viewCnt
+		from review_board <!-- ${tableName} -->
+		order by bno desc
+	</select>
+	
+	<!-- 게시물 작성 -->
+	<insert id="write" parameterType="mvc.test.controller.domain.ReviewBoardVO">
+	 insert into
+	  review_board(bno, title, content, writer)
+	   values(REVIEW_BOARD_SEQ.NEXTVAL, #{title}, #{content}, #{writer})
+	</insert>
+	
+	<!-- 게시물 조회 -->
+	<select id="view" parameterType="int" resultType="mvc.test.controller.domain.ReviewBoardVO">
+		select
+			bno, title, content, writer, regDate, viewCnt
+		from review_board
+		where
+			bno = #{bno}
+	</select>
+	
+	<!-- 게시물 조회수 -->
+	<update id="viewCnt" parameterType="mvc.test.controller.domain.ReviewBoardVO" >
+	 update review_board
+	  set
+	   viewCnt = viewCnt + 1
+	  where bno = #{bno}
+	</update>
+	
+	<!-- 게시물 수정 -->
+	<update id="modify" parameterType="mvc.test.controller.domain.ReviewBoardVO" >
+	 update review_board
+	  set
+	   title = #{title},
+	   content = #{content},
+	   writer = #{writer}
+	  where bno = #{bno}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="mvc.test.controller.domain.ReviewBoardVO">
+		delete from review_board
+		where bno = #{bno}
+	</delete>
+	
+	<!-- 게시물 총 갯수 -->
+	<select id="count" resultType="int">
+		select count(bno) from review_board
+	</select>
+	
+	<!-- 게시물 목록 + 페이징 -->
+	<select id="listPage" parameterType="hashMap" resultType="mvc.test.controller.domain.ReviewBoardVO" >
+	    <![CDATA[
+	    SELECT * FROM (
+              SELECT ROWNUM AS RNUM, A.* FROM (
+                       SELECT
+                             *
+                         FROM
+                             review_board 
+                         order by bno desc 
+             ) A WHERE ROWNUM <= #{displayPost} * #{postNum}
+         ) WHERE RNUM > (#{displayPost}-1) * #{postNum}
+         order by bno desc
+	     ]]>
+	</select>
+	
+	<!-- 게시물 목록 + 페이징 + 검색 -->
+	<select id="listPageSearch" parameterType="hashMap" resultType="mvc.test.controller.domain.ReviewBoardVO">
+	 <![CDATA[
+	    SELECT * FROM (
+              SELECT ROWNUM AS RNUM, A.* FROM (
+                       SELECT *
+                         FROM
+                             review_board 
+                         WHERE
+      ]]>
+							<choose>
+								<when test='searchType.equals("title")'>
+									LOWER(title) like '%'||LOWER(#{keyword})||'%'
+								</when>
+								<when test='searchType.equals("content")'>
+									LOWER(content) like '%'||LOWER(#{keyword})||'%'
+								</when>
+								<when test='searchType.equals("title_content")'>
+									LOWER(title) LIKE '%'||LOWER(#{keyword})||'%' 
+							   		or LOWER(content) LIKE '%'||LOWER(#{keyword})||'%'
+								</when>
+								<when test='searchType.equals("writer")'>
+									LOWER(writer) like '%'||LOWER(#{keyword})||'%'
+								</when>
+							</choose>
+							
+		<![CDATA[
+	                        order by bno desc 
+	             ) A WHERE ROWNUM <= #{displayPost} * #{postNum}
+	         ) WHERE RNUM > (#{displayPost}-1) * #{postNum}
+	         order by bno desc
+	     ]]>
+	</select>
+	
+	<!-- 게시물 총 갯수 + 검색 적용 -->
+	<select id="searchCount" parameterType="hashMap" resultType="int">
+		select count(bno) from review_board
+		where
+			<choose>
+				<when test='searchType.equals("title")'>
+					LOWER(title) like '%'||LOWER(#{keyword})||'%'
+				</when>
+				<when test='searchType.equals("content")'>
+					LOWER(content) like '%'||LOWER(#{keyword})||'%'
+				</when>
+				<when test='searchType.equals("title_content")'>
+					LOWER(title) LIKE '%'||LOWER(#{keyword})||'%' 
+			   		or LOWER(content) LIKE '%'||LOWER(#{keyword})||'%'
+				</when>
+				<when test='searchType.equals("writer")'>
+					LOWER(writer) like '%'||LOWER(#{keyword})||'%'
+				</when>
+			</choose>
+	</select>
+</mapper>

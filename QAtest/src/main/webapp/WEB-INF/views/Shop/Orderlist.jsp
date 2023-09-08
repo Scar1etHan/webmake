@@ -92,7 +92,7 @@
 						<td>${ol.order_number}</td>
 						<td>${ol.user_id}</td>
 						<td>${ol.order_payment}</td>
-						<td>${ol.order_total}</td>
+						<td><fmt:formatNumber value="${ol.order_total}" pattern="#,##0"/> 원</td>
 						<td>
 						  <fmt:formatDate value="${ol.order_date}" pattern="yy-MM-dd a h:mm"/>
 						</td>

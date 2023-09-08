@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mvc.test.mappers.board">
+	
+	<!-- 1. 문의 게시판 목록 -->
+	<select id="QAlist" resultType="mvc.test.controller.domain.QABoardVO">
+	 	select bno, title, content,writer,regDate,viewCnt
+		from qaboard
+		order by bno desc
+	</select> 
+	
+	<!-- 2. 문의 게시글 작성 -->
+	<insert id="QAwrite">
+		insert into qaboard (bno, title, content, writer )
+        values ((select nvl(max(bno)+1,1) from qaboard), #{title}, #{content}, #{writer})
+	</insert>
+	
+	<!-- 3. 문의 게시글 조회 -->
+	<select id="QAread" resultType="mvc.test.controller.domain.QABoardVO">
+		select bno, title, content, writer, regDate, viewCnt
+		from qaboard
+		where bno = #{bno}
+	</select>
+	
+	<!-- 4. 문의 게시글 수정 -->
+	<update id="QAupdate">
+		update qaboard
+		set title = #{title}, content = #{content}
+		where bno = #{bno}
+	</update>
+	
+	<!-- 5. 문의 게시글 삭제 -->
+	<delete id="QAdelete">
+		delete from qaboard where bno = #{bno}
+	</delete>
+	
+	<!-- 6. 문의 게시글 조회수 증가 -->
+	<update id="QAviewCnt">
+		update qaboard set viewCnt = viewCnt + 1 where bno = #{bno}
+	</update>
+</mapper>

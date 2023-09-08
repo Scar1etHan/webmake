@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mvc.test.mappers.eventBoard">
+
+	<!-- 게시물 목록 -->
+	<select id="list" resultType="mvc.test.controller.domain.EventBoardVO">
+		select
+		bno, title, content, writer, regDate, viewCnt
+		from event_board <!-- ${tableName} -->
+		order by bno desc
+	</select>
+	
+	<!-- 게시물 작성 -->
+	<insert id="write" parameterType="mvc.test.controller.domain.EventBoardVO">
+	 insert into
+	  event_board(bno, title, content, writer)
+	   values(event_bno_seq.NEXTVAL, #{title}, #{content}, #{writer})
+	</insert>
+	
+	<!-- 게시물 조회 -->
+	<select id="view" parameterType="int" resultType="mvc.test.controller.domain.EventBoardVO">
+		select
+			bno, title, content, writer, regDate, viewCnt
+		from event_board
+		where
+			bno = #{bno}
+	</select>
+	
+	<!-- 게시물 조회수 -->
+	<update id="viewCnt" parameterType="mvc.test.controller.domain.EventBoardVO" >
+	 update event_board
+	  set
+	   viewCnt = viewCnt + 1
+	  where bno = #{bno}
+	</update>
+	
+	<!-- 게시물 수정 -->
+	<update id="modify" parameterType="mvc.test.controller.domain.EventBoardVO" >
+	 update event_board
+	  set
+	   title = #{title},
+	   content = #{content},
+	   writer = #{writer}
+	  where bno = #{bno}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="mvc.test.controller.domain.EventBoardVO">
+		delete from event_board
+		where bno = #{bno}
+	</delete>
+	
+			<!-- 게시물 총 갯수 -->
+		<select id="count" resultType="int">
+		 select count(bno) from event_board
+		</select>	
+		
+		<!-- 게시물 목록 + 페이징 -->
+	<select id="listPage" parameterType="hashMap" resultType="mvc.test.controller.domain.EventBoardVO">	
+      SELECT *  
+         FROM ( 
+                SELECT
+                       bno, title, content, writer, regDate, viewCnt,
+                       ROW_NUMBER() OVER(ORDER BY BNO DESC) AS RNUM
+                 FROM event_board
+                               ) 
+        WHERE RNUM BETWEEN #{displayPost} AND #{displayPost} + #{postNum} - 1 
+        ORDER BY BNO DESC
+	</select>
+	
+	<!-- 게시물 목록 + 페이징 + 검색 -->
+	<select id="listPageSearch" parameterType="hashMap" resultType="mvc.test.controller.domain.EventBoardVO">
+		SELECT *
+		FROM (
+		    SELECT bno, title, content, writer, regDate, viewCnt,
+		        ROWNUM as rNum
+		    FROM (
+		        SELECT bno, title, content, writer, regDate, viewCnt
+		        FROM event_board
+		        WHERE title LIKE '%' || #{keyword} || '%'  
+		            OR content  LIKE '%' || #{keyword} || '%' 
+		            OR writer LIKE '%' || #{keyword} || '%'
+		        
+		        ORDER BY BNO DESC
+		    )
+		) mb
+		WHERE rNum BETWEEN #{displayPost} AND #{displayPost} + #{postNum} - 1
+		ORDER BY BNO DESC
+</select>
+
+	<!-- 게시물 총 갯수 + 검색 적용 -->
+		<select id="searchCount" parameterType="hashMap" resultType="int">
+		 SELECT COUNT(bno) FROM event_board 
+  <where>
+    <choose>
+      <when test="searchType == 'title'">
+        AND title LIKE '%' || #{keyword} || '%'
+      </when>
+      <when test="searchType == 'content'">
+        AND content LIKE '%' || #{keyword} || '%'
+      </when>
+      <when test="searchType == 'title_content'">
+        AND (title LIKE '%' || #{keyword} || '%' OR content LIKE '%' || #{keyword} || '%')
+      </when>
+      <when test="searchType == 'writer'">
+        AND writer LIKE '%' || #{keyword} || '%'
+      </when>
+    </choose>
+  </where>
+</select>
+
+</mapper>

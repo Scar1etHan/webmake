@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mvc.test.mappers.adminMapper">
+
+	<resultMap id="adminVOResultMap" type="mvc.test.controller.domain.UserVO">
+	    <id property="userId" column="user_id"/>
+	    <result property="userName" column="user_name"/>
+	    <result property="userEmail" column="user_email"/>
+	    <result property="userAge" column="user_age"/>
+	    <result property="userSex" column="User_Sex"/>
+	    <result property="userAddr1" column="User_Addr1"/>
+	    <result property="userAddr2" column="User_Addr2"/>
+	    <result property="userAddr3" column="User_Addr3"/>
+	    <result property="userCell" column="User_Cell"/>
+	    <result property="adminCk" column="adminCk"/>
+	    <result property="userRegDate" column="user_regdate"/>
+	</resultMap>
+	
+	<!-- 로그인 -->
+	<select id="adminLogin" resultType="mvc.test.controller.domain.AdminVO">
+		select * from admin
+		where admin_id = #{admin_id}
+	</select>
+
+	<!-- 유저리스트 -->
+	<select id="userList" resultType="mvc.test.controller.domain.UserVO" resultMap="adminVOResultMap">
+    	SELECT *
+    	FROM tbl_user
+    	ORDER BY user_regdate DESC
+    </select>
+    
+    <!-- 회원 강제탈퇴 -->
+    <delete id="memberBan">
+    	delete from tbl_user 
+    	where user_id = #{userId}
+    </delete>
+
+	
+	<!-- 카테고리 호출 -->
+	<select id="category" resultType="mvc.test.controller.domain.CategoryVO">
+	 select
+	  level, cateName, cateCode, cateCodeRef
+	 from goods_category
+	     start with cateCodeRef is null connect by prior cateCode = cateCodeRef
+	</select>
+	
+	<!-- 상품등록 -->
+	<insert id="register">
+		insert into tbl_goods (gdsNum, gdsName, cateCode, gdsPrice, gdsStock, gdsDes, gdsImg, gdsThumbImg)
+			values (tbl_goods_seq.nextval, #{gdsName}, #{cateCode}, #{gdsPrice}, #{gdsStock}, #{gdsDes}, #{gdsImg}, #{gdsThumbImg})
+	</insert>
+	
+	<!-- 상품 목록 -->
+	<select id="goodslist" resultType="mvc.test.controller.domain.GoodsVO">
+		select
+		gdsNum, gdsName, cateCode, gdsPrice, gdsStock, gdsDes, gdsImg, gdsDate
+		from tbl_goods
+		order by gdsNum desc
+	</select>
+	
+	<!-- 상품 조회 + 카테고리 조인-->
+	<select id="goodsView" resultType="mvc.test.controller.domain.GoodsViewVO">
+		  select
+	      g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, gdsPrice, 
+	      gdsStock, gdsDes, gdsImg, gdsDate, g.gdsImg, g.gdsThumbImg
+	      from tbl_goods g
+	      inner join goods_category c
+	      on g.cateCode = c.cateCode          
+	      where g.gdsNum = #{gdsNum}
+	</select>
+	
+		<!-- 상품 수정 -->
+	<update id="goodsModify">
+			 update tbl_goods
+	     set
+	         gdsName = #{gdsName},   
+	         gdsPrice = #{gdsPrice},
+	         gdsStock = #{gdsStock},
+	         gdsDes = #{gdsDes},
+	         
+	         gdsImg = #{gdsImg},
+        	 gdsThumbImg = #{gdsThumbImg}
+	         
+	     where gdsNum = ${gdsNum}
+	</update>
+	
+	<!-- 상품 삭제 -->
+	<delete id="goodsDelete">
+	   delete
+	   tbl_goods
+	   where gdsNum = #{gdsNum}
+	</delete>
+</mapper>

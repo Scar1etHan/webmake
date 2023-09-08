@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mvc.test.mappers.shopMapper">
+
+<!-- 상품 리스트 -->
+	<select id="list" resultType="mvc.test.controller.domain.GoodsViewVO">
+	 SELECT
+        gdsNum,gdsName, cateCode, gdsPrice,
+        gdsStock,gdsDes, gdsImg, gdsDate, gdsImg,
+        gdsThumbImg
+    FROM
+        tbl_goods 
+    ORDER BY
+        gdsNum ASC
+</select>
+
+<!-- 상품 조회 + 카테고리 조인-->
+	<select id="goodsView" resultType="mvc.test.controller.domain.GoodsViewVO">
+		  select
+	      g.gdsNum, g.gdsName, g.cateCode, c.cateCodeRef, c.cateName, gdsPrice, 
+	      gdsStock, gdsDes, gdsImg, gdsDate, g.gdsImg, g.gdsThumbImg
+	      from tbl_goods g
+	      inner join goods_category c
+	      on g.cateCode = c.cateCode          
+	      where g.gdsNum = #{gdsNum}
+	</select>
+	
+	<!-- 상품 소감(댓글) 작성 -->
+	<insert id="registReply">
+		 insert into product_reply (gdsNum, user_Id, repNum, repCon)
+	     values (#{gdsNum}, #{userId}, product_reply_seq.nextval, #{repCon})
+	</insert>
+
+	<!-- 상품 소감(댓글) 리스트 -->
+	<select id="replyList" resultType="mvc.test.controller.domain.ReplyListVO">
+<!-- 		select
+			r.gdsNum, r.user_Id AS user_Id, r.repNum, r.repCon, r.repDate
+		from product_reply r
+			inner join TBL_USER m
+			on r.user_Id = m.user_Id
+		where gdsNum = #{gdsNum} -->
+		SELECT gdsNum, user_Id, repNum, repCon, repDate FROM product_reply WHERE gdsNum = #{gdsNum}
+	</select>
+	
+	<!-- 상품 소감(댓글) 삭제 -->
+	<delete id="deleteReply">
+		delete product_reply
+		where repNum = #{repNum}
+		and user_Id = #{userId}
+	</delete>
+	
+	<!-- 아이디 체크 -->
+	<select id="replyUserIdCheck" resultType="String">
+		select user_Id
+		from product_reply
+		where repNum = #{repNum}
+	</select>
+
+	<!-- 상품 소감(댓글) 수정 -->
+	<update id="modifyReply">
+		update product_reply
+			set
+				repCon = #{repCon}
+			where repNum = #{repNum}
+				and user_Id = #{userId}
+	</update>
+	
+	<!-- 카트 담기 -->
+	<insert id="addCart">
+		insert into tbl_cart (cartNum, user_Id, gdsNum, cartStock)
+			values (tbl_cart_seq.nextval, #{userId}, #{gdsNum}, #{cartStock})
+	</insert>
+	
+	<!-- 카트 리스트 -->
+	<select id="cartList" resultType="mvc.test.controller.domain.CartListVO">
+		 select
+		     row_number() over(order by c.cartNum desc) as num,
+		     c.cartNum, c.user_Id, c.gdsNum, c.cartStock, c.addDate,
+		     g.gdsName, g.gdsPrice, g.gdsThumbImg
+		 from tbl_cart c
+		     inner join tbl_goods g
+		         on c.gdsNum = g.gdsNum   
+		     where c.user_Id = #{userId}
+	</select>
+	
+	<!-- 카트 삭제 -->
+	<delete id="deleteCart" >
+		delete tbl_cart
+			where cartNum =  #{cartNum}
+				and userId = #{userId}
+	</delete>
+</mapper>
