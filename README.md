@@ -61,7 +61,9 @@ KIC 캠퍼스(국비학원) 에서 진행한 화장품 쇼핑몰 팀 프로젝�
   * 주문 배송 상태 업데이트(관리자 페이지)
  
 # 이미지
-
+<p align="center">
+ <img src="![약관 선택 전](https://github.com/Scar1etHan/webmake/assets/137043086/c36c36e8-f380-47b6-bacc-a620c813d4ab)">
+</p>
  
 
 ## 쇼핑몰 프로젝트에서 맡은 담당 : 문의 게시판(인당 게시판 하나씩), 회원, 주문
