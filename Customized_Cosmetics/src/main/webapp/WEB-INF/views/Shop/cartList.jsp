@@ -27,7 +27,7 @@ a {
   color: black;
 }
 
-img {
+#img123 {
   display: block;
   width: 80%;
   height: 100px;
@@ -247,7 +247,7 @@ td {
                       	  <input type="checkbox" value="${cartList.cartNum}">
                       	</td>
                         <td style="width: 13%;">
-                            <img src="${cartList.gdsThumbImg}" alt="img">
+                            <img src="${cartList.gdsThumbImg}" alt="img" id="img123">
                         </td>
                         <td style="width: 27%;"><a href="#">상품명 : ${cartList.gdsName}</a><span class="cart__list__smartstore"> 스마트스토어</span>
                             <p>상품 주문 수량: ${cartList.cartStock}</p>

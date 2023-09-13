@@ -69,8 +69,6 @@ body {
                         </div>
                        <div class="col-md-3 offset-md-1 mb-3">
                             <label for="sex">성별</label>
-                            <%-- <input type="text" class="form-control" id="user_sex" name="user_sex"
-                            	value="${vo.user_sex}" required readonly> --%>
                             <select id="userSex" name="userSex" class="form-control" required">
                                <option value="">성별선택</option>
                                <option value="남자">남자</option>
